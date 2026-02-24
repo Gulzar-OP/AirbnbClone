@@ -1,13 +1,30 @@
-import React, { useState } from 'react'
+import React, { use, useContext, useState } from 'react'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
-
+import { authDataContext } from '../Context/AuthContext';
+import axios from 'axios';
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
-    
+    let [email,setEmail]=useState("")
+    let [password,setPassword]=useState("")
+    let {serverUrl}=useContext(authDataContext)
+    const handleLogin = async()=>{
+        // handle sign up logic
+        try{
+            e.preventDefault()
+            let result = await axios.post(serverUrl +"/api/auth/login",{
+                email,
+                password
+            },{withCredentials:true})
+            console.log(result)
+        }catch(e){
+            console.log(e)
+        }
+        
+    }
     return (
         <div className='min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4'>
             <button
@@ -19,7 +36,8 @@ export default function Login() {
                 <FaArrowLeft size={24} />
             </button>
             
-            <form className='w-full max-w-md bg-white rounded-2xl shadow-xl p-8 md:p-10 flex flex-col items-center space-y-6 border border-gray-100'>
+            <form className='w-full max-w-md bg-white rounded-2xl shadow-xl p-8 md:p-10 flex flex-col items-center space-y-6 border border-gray-100'
+                onSubmit={handleLogin}>
                 <h1 className='text-3xl md:text-4xl font-bold text-gray-900 text-center'>Welcome to Airbnb</h1>
                 
                 <div className='w-full space-y-3'>
@@ -30,6 +48,7 @@ export default function Login() {
                         id='email' 
                         placeholder='Enter your email'
                         className='w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 transition-all duration-200' 
+                        required onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
                 
@@ -42,6 +61,7 @@ export default function Login() {
                             id="password"
                             placeholder="Enter your password"
                             className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 transition-all duration-200"
+                            required onChange={(e) => setPassword(e.target.value)}
                         />
                         <button
                             type="button"
