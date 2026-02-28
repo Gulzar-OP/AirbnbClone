@@ -4,6 +4,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 import { authDataContext } from '../Context/AuthContext';
+import { userDataContext } from '../Context/UserContext';
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
@@ -12,7 +13,7 @@ export default function SignUp() {
     let [name,setName]=useState("")
     let [email,setEmail]=useState("")
     let [password,setPassword]=useState("")
-
+    let [userData,setUserData] = useContext(userDataContext)
     const handleSignUP = async()=>{
         // handle sign up logic
         try{
@@ -22,6 +23,8 @@ export default function SignUp() {
                 email,
                 password
             },{withCredentials:true})
+            setUserData(result.data)
+            navigate("/")
             console.log(result)
         }catch(e){
             console.log(e)

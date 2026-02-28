@@ -5,26 +5,34 @@ import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 import { authDataContext } from '../Context/AuthContext';
 import axios from 'axios';
+import { userDataContext } from '../Context/UserContext';
+import { useEffect } from 'react';
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
     let [email,setEmail]=useState("")
     let [password,setPassword]=useState("")
     let {serverUrl}=useContext(authDataContext)
-    const handleLogin = async()=>{
-        // handle sign up logic
-        try{
-            e.preventDefault()
-            let result = await axios.post(serverUrl +"/api/auth/login",{
-                email,
-                password
-            },{withCredentials:true})
-            console.log(result)
-        }catch(e){
-            console.log(e)
-        }
-        
-    }
+    let {userData,setUserData} = useContext(userDataContext)
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const result = await axios.post(
+      serverUrl + "/api/auth/login",
+      { email, password },
+      { withCredentials: true }
+    );
+
+    setUserData(result.data.user);
+    navigate("/");
+    console.log(userData);
+  } catch (err) {
+    console.log(err.response?.data || err.message);
+  }
+};
+useEffect(()=>{
+    console.log(userData);
+},[userData])
     return (
         <div className='min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4'>
             <button

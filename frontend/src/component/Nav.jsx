@@ -15,16 +15,19 @@ import { FaShop } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../Context/AuthContext';
 import axios from 'axios';
+import { userDataContext } from '../Context/UserContext.jsx';
 
 export default function Nav() {
     let [showpopup,setShowpopup] = useState(false)
     let navigate = useNavigate()
     let {serverUrl} = useContext(authDataContext)
+    let {userData,setUserData} = useContext(userDataContext)
     const handleLogout = async () => {
         // handle logout logic
         try{
             let result = await axios.post(serverUrl +"/api/auth/logout",{}, {withCredentials:true})
             console.log(result)
+            setUserData(null)
         }catch(e){
             console.log(e)
         }
@@ -49,7 +52,9 @@ export default function Nav() {
             border-[1px] border-[#bdbaba] rounded-[30px] hover:shadow-md' onClick={() => setShowpopup(!showpopup)}>
             <span><GiHamburgerMenu
             className='w-[20px] h-[20px]'/></span>
-            <span><CgProfile className='w-[20px] h-[23px]' /></span></button>
+            {userData ==null &&<span><CgProfile className='w-[20px] h-[23px]' /></span>}
+            {userData != null && <span className='w-[30px] h-[30px] bg-[#080808] text-white rounded-full flex items-center justify-center'> {userData?.name?.charAt(0)?.toUpperCase()}</span>}
+            </button>
             { showpopup  && <div className='w-[220px] h-[250px] absolute top-[60px] right-[10px] rounded-lg bg-red-400 '>
                 <ul className='w-[100%] h-[100%] text-[17px] flex items-start justify-around flex-col py-[10px]'>
                     <li className='p-[10px] cursor-pointer hover:bg-[#f4f3f3] w-[100%]'onClick={() => navigate('/login')}>Login</li>
