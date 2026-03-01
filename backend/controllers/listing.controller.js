@@ -1,5 +1,5 @@
-import Listing from "../model/listing.model"
-import User from "../model/user.model"
+import Listing from "../model/listing.model.js"
+import User from "../model/user.model.js"
 
 export const addingListing = async(req,res)=>{
     try{

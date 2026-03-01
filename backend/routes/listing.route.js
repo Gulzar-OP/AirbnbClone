@@ -1,14 +1,19 @@
-
 import express from 'express'
-import { addingListing } from '../controllers/listing.controller'
-import isAuth from '../middleware/isAuth'
+import { addingListing } from '../controllers/listing.controller.js'
+import isAuth from '../middleware/isAuth.js'
+import Uploads from '../middleware/multer.js'   
 
 let listingRouter = express.Router()
 
-listingRouter.post("/add",isAuth,UploadStream.fields([
-    { name: 'image1' ,maxCount:1}, 
-    { name: 'image2',maxCount:1 }, 
-    { name: 'image3',maxCount:1 }
-]), addingListing)
+listingRouter.post(
+  "/add",
+  isAuth,
+  Uploads.fields([
+    { name: 'image1', maxCount: 1 },
+    { name: 'image2', maxCount: 1 },
+    { name: 'image3', maxCount: 1 }
+  ]),
+  addingListing
+)
 
 export default listingRouter
